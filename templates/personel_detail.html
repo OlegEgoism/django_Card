@@ -1,10 +1,16 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Персональные данные</title>
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
 <body>
+
+<div class="circular-container">
+
 <h3><a href="{% url 'personel_list' %}">Список работников</a> <a href="{% url 'personel_create' %}">Создать карточку</a></h3>
 
 <div style="display: flex; align-items: center;">
@@ -155,5 +161,6 @@
 </ul>
 </p>
 
+</div>
 </body>
 </html>
