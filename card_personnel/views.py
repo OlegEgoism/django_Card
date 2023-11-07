@@ -86,7 +86,6 @@ def personel_edit(request, id):
         personel_form = PersonelForm(instance=personel)
         contract_form = ContractForm(instance=contract) if contract else ContractForm()
         registration_form = RegistrationForm(instance=registration) if registration else RegistrationForm()
-
     context = {
         'personel_form': personel_form,
         'registration_form': registration_form,
@@ -439,7 +438,7 @@ def spravka(request, id):
     run.underline = True
     run.underline = WD_UNDERLINE.SINGLE
 
-    if personel.photo is not None:
+    if personel.photo and personel.photo.file:
         image_stream = BytesIO(personel.photo.read())
         cell = table.cell(0, 1)
         cell.paragraphs[0].add_run().add_picture(image_stream, width=Mm(30), height=Mm(40))
