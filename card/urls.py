@@ -34,18 +34,23 @@ urlpatterns = [
 
     path('phone_create/<int:id>/', views.phone_create, name='phone_create'),
     path('phone_delete/<int:id>/<int:phone_id>/', views.phone_delete, name='phone_delete'),
+    path('phone_edit/<int:phone_id>/', views.phone_edit, name='phone_edit'),
 
     path('work_create/<int:id>/', views.work_create, name='work_create'),
     path('work_delete/<int:id>/<int:work_id>/', views.work_delete, name='work_delete'),
+    path('work_edit/<int:work_id>/', views.work_edit, name='work_edit'),
 
     path('education_create/<int:id>/', views.education_create, name='education_create'),
     path('education_delete/<int:id>/<int:education_id>/', views.education_delete, name='education_delete'),
+    path('education_edit/<int:education_id>/', views.education_edit, name='education_edit'),
 
     path('language_skill_create/<int:id>/', views.language_skill_create, name='language_skill_create'),
     path('language_skill_delete/<int:id>/<int:language_skill_id>/', views.language_skill_delete, name='language_skill_delete'),
+    path('language_skill_edit/<int:language_skill_id>/', views.language_skill_edit, name='language_skill_edit'),
 
     path('family_create/<int:id>/', views.family_create, name='family_create'),
     path('family_delete/<int:id>/<int:family_id>/', views.family_delete, name='family_delete'),
+    path('family_edit/<int:family_id>/', views.family_edit, name='family_edit'),
 
     path('spravka/<int:id>', views.spravka, name='spravka'),
 ]

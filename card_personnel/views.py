@@ -127,6 +127,22 @@ def phone_delete(request, id, phone_id):
     return render(request, 'delete.html', context)
 
 
+def phone_edit(request, phone_id):
+    phone = get_object_or_404(Phone, id=phone_id)
+    if request.method == 'POST':
+        form = PhoneForm(request.POST, instance=phone)
+        if form.is_valid():
+            form.save()
+            return redirect('personel_detail', id=phone.personel.id)
+    else:
+        form = PhoneForm(instance=phone)
+    context = {
+        'form': form,
+        'phone': phone,
+    }
+    return render(request, 'edit.html', context)
+
+
 def work_create(request, id):
     personel = Personel.objects.get(id=id)
     if request.method == 'POST':
@@ -156,6 +172,22 @@ def work_delete(request, id, work_id):
         'work': work,
     }
     return render(request, 'delete.html', context)
+
+
+def work_edit(request, work_id):
+    work = get_object_or_404(Work, id=work_id)
+    if request.method == 'POST':
+        form = WorkForm(request.POST, instance=work)
+        if form.is_valid():
+            form.save()
+            return redirect('personel_detail', id=work.personel.id)
+    else:
+        form = WorkForm(instance=work)
+    context = {
+        'form': form,
+        'work': work,
+    }
+    return render(request, 'edit.html', context)
 
 
 def education_create(request, id):
@@ -189,6 +221,22 @@ def education_delete(request, id, education_id):
     return render(request, 'delete.html', context)
 
 
+def education_edit(request, education_id):
+    education = get_object_or_404(Education, id=education_id)
+    if request.method == 'POST':
+        form = EducationForm(request.POST, instance=education)
+        if form.is_valid():
+            form.save()
+            return redirect('personel_detail', id=education.personel.id)
+    else:
+        form = EducationForm(instance=education)
+    context = {
+        'form': form,
+        'education': education,
+    }
+    return render(request, 'edit.html', context)
+
+
 def language_skill_create(request, id):
     personel = Personel.objects.get(id=id)
     if request.method == 'POST':
@@ -220,6 +268,22 @@ def language_skill_delete(request, id, language_skill_id):
     return render(request, 'delete.html', context)
 
 
+def language_skill_edit(request, language_skill_id):
+    language_skill = get_object_or_404(LanguageSkills, id=language_skill_id)
+    if request.method == 'POST':
+        form = LanguageSkillsForm(request.POST, instance=language_skill)
+        if form.is_valid():
+            form.save()
+            return redirect('personel_detail', id=language_skill.personel.id)
+    else:
+        form = LanguageSkillsForm(instance=language_skill)
+    context = {
+        'form': form,
+        'language_skill': language_skill,
+    }
+    return render(request, 'edit.html', context)
+
+
 def family_create(request, id):
     personel = Personel.objects.get(id=id)
     if request.method == 'POST':
@@ -249,6 +313,22 @@ def family_delete(request, id, family_id):
         'family': family,
     }
     return render(request, 'delete.html', context)
+
+
+def family_edit(request, family_id):
+    family = get_object_or_404(Family, id=family_id)
+    if request.method == 'POST':
+        form = FamilyForm(request.POST, instance=family)
+        if form.is_valid():
+            form.save()
+            return redirect('personel_detail', id=family.personel.id)
+    else:
+        form = FamilyForm(instance=family)
+    context = {
+        'form': form,
+        'family': family,
+    }
+    return render(request, 'edit.html', context)
 
 
 def spravka(request, id):
@@ -565,9 +645,11 @@ def spravka(request, id):
     run.underline = WD_UNDERLINE.SINGLE
 
     family = Family.objects.filter(personel=personel)
-    family_info_str = ''
-    if family:
-        family_info_list = [f'{family.last_name} {family.first_name} {family.middle_name}, {family.status.name}, {family.date_of_birth.strftime("%d.%m.%Y")}']
+    family_info_list = []
+    for member in family:
+        family_info = f'{member.last_name} {member.first_name} {member.middle_name}, {member.status.name}, {member.date_of_birth.strftime("%d.%m.%Y")} г.р.'
+        family_info_list.append(family_info)
+    if family_info_list:
         family_info_str = ', '.join(family_info_list)
     else:
         family_info_str = 'Нет информации'

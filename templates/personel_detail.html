@@ -64,6 +64,7 @@
         <li>
         {{ phone.number }}
         <a href="{% url 'phone_delete' personel.id phone.id %}">Удалить</a>
+        <a href="{% url 'phone_edit' phone.id %}">Редактировать</a>
     {% empty %}
         Нет информации
     {% endfor %}
@@ -89,6 +90,7 @@
                 Название организации: {{ work.name|default:"Нет информации" }}<br>
                 Адрес организации: {{ work.address|default:"Нет информации" }}<br>
                 <a href="{% url 'work_delete' personel.id work.id %}">Удалить</a>
+                <a href="{% url 'work_edit' work.id %}">Редактировать</a>
             </li>
         {% endfor %}
     {% else %}
@@ -113,6 +115,7 @@
                 Факультет: {{ education.faculty|default:"Нет информации" }}<br>
                 Специальность: {{ education.speciality|default:"Нет информации" }}<br>
                 <a href="{% url 'education_delete' personel.id education.id %}">Удалить</a>
+                <a href="{% url 'education_edit' education.id %}">Редактировать</a>
             </li>
         {% endfor %}
     {% else %}
@@ -129,6 +132,7 @@
         <li>
             {{ language_skill.language.name }} ({{ language_skill.level }})
             <a href="{% url 'language_skill_delete' personel.id language_skill.id %}">Удалить</a>
+            <a href="{% url 'language_skill_edit' language_skill.id %}">Редактировать</a>
         </li>
     {% empty %}
         Нет информации
@@ -143,7 +147,7 @@
         <li>
             {{ family.last_name }} {{ family.first_name }} {{ family.middle_name }} ({{ family.status.name }}) {{ family.date_of_birth|date:"d.m.Y" }} г. р.
             <a href="{% url 'family_delete' personel.id family.id %}">Удалить</a>
-
+            <a href="{% url 'family_edit' family.id %}">Редактировать</a>
         </li>
     {% empty %}
         Нет информации
