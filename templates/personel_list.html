@@ -5,18 +5,33 @@
     <title>Список работников</title>
 </head>
 <body>
-<h3><a href="{% url 'personel_create' %}">Создать карточку</a></h3>
-<h1>Список работников</h1>
-<h3>
-    <ul>
-        {% for personel in personel_list %}
-            <li>
-                <a href="{% url 'personel_detail' personel.id %}">
-                    {{ personel.last_name }} {{ personel.first_name }} {{ personel.middle_name }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-</h3>
+    <div>
+        <ul class="navbar-nav mr-auto">
+            {% if request.user.is_authenticated %}
+                <h7 class="nav-link" ><font color="red">Добро пожаловать, {{ user.username }}</font></h7>
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><font color="#0d6efd">Выход</font></a></li>
+            {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><font color="#0d6efd">Вход</font></a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'register' %}"><font color="#0d6efd">Регистрация</font></a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <h3><a href="{% url 'personel_create' %}">Создать карточку</a></h3>
+    <h1>Список работников</h1>
+    <h3>
+        <ul>
+            {% if request.user.is_authenticated %}
+                {% for personel in personel_list %}
+                    <li>
+                        <a href="{% url 'personel_detail' personel.id %}">
+                            {{ personel.last_name }} {{ personel.first_name }} {{ personel.middle_name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p>Вы не авторизованы. Для просмотра данных, пожалуйста, войдите или зарегистрируйтесь.</p>
+            {% endif %}
+        </ul>
+    </h3>
 </body>
 </html>

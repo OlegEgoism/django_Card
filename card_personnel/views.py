@@ -1,12 +1,49 @@
 import datetime
 from io import BytesIO
+
+from django.contrib.auth import logout, login
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from docx import Document
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT, WD_UNDERLINE
 from docx.shared import Mm, Cm, Pt
-from card_personnel.forms import PersonelForm, ContractForm, RegistrationForm, EducationForm, LanguageSkillsForm, WorkForm, FamilyForm, PhoneForm
+from card_personnel.forms import PersonelForm, ContractForm, RegistrationForm, EducationForm, LanguageSkillsForm, WorkForm, FamilyForm, PhoneForm, LoginForm, RegistrationUserForm
 from card_personnel.models import Personel, Contract, Registration, Education, LanguageSkills, Family, Phone, Work
+
+
+def user_register(request):
+    if request.method == 'POST':
+        form = RegistrationUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('personel_list')
+    else:
+        form = RegistrationUserForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'register.html', context)
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('personel_list')
+    else:
+        form = LoginForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'login.html', context)
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
 
 
 def personel_list(request):
