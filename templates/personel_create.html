@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создать карточку</title>
+</head>
+<body>
+<h3><a href="{% url 'personel_list' %}">Список работников</a></h3>
+<h1>Создать карточку</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p><strong>Персональные данные:</strong> {{ personel_form.as_p }} </p>
+    <p><strong>Контракт:</strong> {{ contract_form.as_p }} </p>
+    <p><strong>Место жительства:</strong> {{ registration_form.as_p }} </p>
+    <button type="submit">Создать</button>
+</form>
+</body>
+</html>

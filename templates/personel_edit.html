@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать карточку</title>
+</head>
+<body>
+<h3><a href="{% url 'personel_list' %}">Список работников</a> <a href="{% url 'personel_create' %}">Создать карточку</a></h3>
+<h1>Редактировать карточку</h1>
+<form method="post">
+    {% csrf_token %}
+    <p>
+    {% if personel_form.instance.photo %}
+        <img src="{{ personel_form.instance.photo.url }}" width="150" height="200">
+    {% else %}
+        Фотография отсутствует
+    {% endif %}
+</p>
+<p><strong>Данные работника:</strong></p>
+    {{ personel_form.as_p }}
+<p><strong>Контракт:</strong></p>
+    {{ contract_form.as_p }}
+<p><strong>Место жительства:</strong></p>
+    {{ registration_form.as_p }}
+    <button type="submit">Сохранить</button>
+</form>
+</body>
+</html>

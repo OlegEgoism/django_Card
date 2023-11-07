@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p><strong>Телефон:</strong> {{ phone_form.as_p }} </p>
+    <button type="submit">Создать</button>
+</form>
+</body>
+</html>

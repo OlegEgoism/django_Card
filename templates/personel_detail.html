@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Персональные данные</title>
+</head>
+<body>
+<h3><a href="{% url 'personel_list' %}">Список работников</a> <a href="{% url 'personel_create' %}">Создать карточку</a></h3>
+
+<div style="display: flex; align-items: center;">
+    <a href="{% url 'spravka' personel.id %}">
+        <button>Скачать документ Word</button>
+    </a>
+    <a href="{% url 'personel_edit' personel.id %}">
+        <button>Редактировать карточку</button>
+    </a>
+    <form method="post" action="{% url 'personel_delete' personel.id %}">
+        {% csrf_token %}
+        <button type="submit">Удалить карточку</button>
+    </form>
+</div>
+
+
+<h1>Персональные данные</h1>
+
+
+<p>
+    {% if personel.photo %}
+        <img src="{{ personel.photo.url }}" width="150" height="200">
+    {% else %}
+        Фотография отсутствует
+    {% endif %}
+</p>
+
+
+<p><strong>ФИО:</strong> {{ personel.last_name }} {{ personel.first_name }} {{ personel.middle_name }}</p>
+<p><strong>Дата рождения:</strong> {{ personel.date_of_birth|date:"d.m.Y" }}</p>
+<p><strong>Пол:</strong> {{ personel.gender }}</p>
+<p><strong>Дополнительные сведения:</strong> {{ personel.note|default:"Нет информации" }}</p>
+
+
+<p><strong>Место жительства:</strong>
+    {% if personel.personel_registration %}
+        {{ personel.personel_registration.country.name }}, р-н. {{ personel.personel_registration.district }} г. {{ personel.personel_registration.city }}, ул. {{ personel.personel_registration.street }} {{ personel.personel_registration.house }}, кв. {{ personel.personel_registration.apartment }}
+    {% else %}
+        Нет информации
+    {% endif %}
+</p>
+
+
+<p><strong>Контракт:</strong>
+    {% if personel.personel_сontract %}
+        {{ personel.personel_сontract.type.name }} ({{ personel.personel_сontract.date_start|date:"d.m.Y" }} г. - {% if personel.personel_сontract.date_end %}{{ personel.personel_сontract.date_end|date:"d.m.Y" }} г.{% else %}по н.в.{% endif %})
+    {% else %}
+        Нет информации
+    {% endif %}
+</p>
+
+
+<a href="{% url 'phone_create' personel.id %}">Добавить телефон</a>
+<p><strong>Телефон:</strong>
+<ul>
+    {% for phone in personel.personel_phone.all %}
+        <li>
+        {{ phone.number }}
+        <a href="{% url 'phone_delete' personel.id phone.id %}">Удалить</a>
+    {% empty %}
+        Нет информации
+    {% endfor %}
+    </li>
+</ul>
+</p>
+
+
+<a href="{% url 'work_create' personel.id %}">Добавить трудовую деятельность</a>
+<p><strong>Трудовая деятельность:</strong>
+<ul>
+    {% if personel.personel_work.all %}
+        {% for work in personel.personel_work.all %}
+            <li>
+                с {{ work.date_start|date:"d.m.Y"|default:"Нет информации" }} г.
+                по {% if work.date_end %}
+                {{ work.date_end|date:"d.m.Y" }}
+            {% else %}
+                по н.в.
+            {% endif %}<br>
+                Страна: {{ work.country.name|default:"Нет информации" }}<br>
+                Должность: {{ work.position|default:"Нет информации" }}<br>
+                Название организации: {{ work.name|default:"Нет информации" }}<br>
+                Адрес организации: {{ work.address|default:"Нет информации" }}<br>
+                <a href="{% url 'work_delete' personel.id work.id %}">Удалить</a>
+            </li>
+        {% endfor %}
+    {% else %}
+        Нет информации
+    {% endif %}
+</ul>
+</p>
+
+
+<a href="{% url 'education_create' personel.id %}">Добавить образование</a>
+<p><strong>Образование:</strong>
+<ul>
+    {% if personel.personel_education.all %}
+
+        {% for education in personel.personel_education.all %}
+            <li>
+                {{ education.level }}<br>
+                Дата начала: {{ education.date_start|date:"d.m.Y"|default:"Нет информации" }}. Дата окончания: {{ education.date_end|date:"d.m.Y"|default:"по н.в." }}<br>
+                Страна: {{ education.country.name|default:"Нет информации" }}<br>
+                Адрес: {{ education.address|default:"Нет информации" }}<br>
+                Название: {{ education.name|default:"Нет информации" }}<br>
+                Факультет: {{ education.faculty|default:"Нет информации" }}<br>
+                Специальность: {{ education.speciality|default:"Нет информации" }}<br>
+                <a href="{% url 'education_delete' personel.id education.id %}">Удалить</a>
+            </li>
+        {% endfor %}
+    {% else %}
+        Нет информации
+    {% endif %}
+</ul>
+</p>
+
+
+<a href="{% url 'language_skill_create' personel.id %}">Добавить владение языками</a>
+<p><strong>Владение языками:</strong>
+<ul>
+    {% for language_skill in personel.personel_language.all %}
+        <li>
+            {{ language_skill.language.name }} ({{ language_skill.level }})
+            <a href="{% url 'language_skill_delete' personel.id language_skill.id %}">Удалить</a>
+        </li>
+    {% empty %}
+        Нет информации
+    {% endfor %}
+</ul>
+
+
+<a href="{% url 'family_create' personel.id %}">Добавить состав семьи</a>
+<p><strong>Семья:</strong>
+<ul>
+    {% for family in personel.personel_family.all %}
+        <li>
+            {{ family.last_name }} {{ family.first_name }} {{ family.middle_name }} ({{ family.status.name }}) {{ family.date_of_birth|date:"d.m.Y" }} г. р.
+            <a href="{% url 'family_delete' personel.id family.id %}">Удалить</a>
+
+        </li>
+    {% empty %}
+        Нет информации
+    {% endfor %}
+</ul>
+</p>
+
+</body>
+</html>
